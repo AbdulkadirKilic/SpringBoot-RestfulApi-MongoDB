@@ -3,12 +3,7 @@ package com.example.AnimalRecording.Controller;
 import com.example.AnimalRecording.Model.Animal;
 import com.example.AnimalRecording.Service.AnimalService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.servlet.Servlet;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -34,12 +29,9 @@ public class Controller {
     }
 
     @PostMapping
-    public ResponseEntity<Animal> post(@RequestBody  Animal newAnimal){
-        Animal savedAnimal =animalService.create(newAnimal);
+    public Animal post(@RequestBody  Animal newAnimal){
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedAnimal.getId()).toUri();
-
-        return  ResponseEntity.created(location).build();
+        return  animalService.create(newAnimal);
 
     }
 
