@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -28,17 +29,15 @@ public class Controller {
 
     @GetMapping("/{id}")
     public Animal getAnimal(@PathVariable("id") String animalId) {
-        Animal responseAnimal =animalService.getAnimalById(animalId);
-
         animalService.notFoundExceptionControl(animalId);
 
-        return responseAnimal;
+        return animalService.getAnimalById(animalId);
 
 
     }
 
     @PostMapping
-    public ResponseEntity<Animal> post(@RequestBody Animal newAnimal) {
+    public ResponseEntity<Animal> post(@Valid @RequestBody Animal newAnimal) {
         Animal savedAnimal = animalService.create(newAnimal);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedAnimal.getId()).toUri();

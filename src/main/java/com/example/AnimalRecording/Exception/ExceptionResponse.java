@@ -5,17 +5,17 @@ import java.util.Date;
 public class ExceptionResponse {
     private Date timestamp;
     private String message;
-    private String message2;
+
     private String details;
 
 
 
-    public ExceptionResponse(Date timestamp, String message, String details, String malca) {
+    public ExceptionResponse(Date timestamp, String message, String details) {
         super();
         this.timestamp = timestamp;
         this.message = message;
         this.details = details;
-        this.message2 =malca;
+
 
     }
 
@@ -31,9 +31,7 @@ public class ExceptionResponse {
         return details;
     }
 
-    public String getMessage2(){
-        return message2;
-    }
+
 
 
 
