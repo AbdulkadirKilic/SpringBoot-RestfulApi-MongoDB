@@ -1,5 +1,6 @@
 package com.example.AnimalRecording.Service;
 
+import com.example.AnimalRecording.Exception.AnimalNotFoundException;
 import com.example.AnimalRecording.Model.Animal;
 import com.example.AnimalRecording.Repository.IAnimalRepository;
 
@@ -14,19 +15,30 @@ import java.util.Optional;
 public class AnimalService  {
     private final IAnimalRepository repository;
 
+    public void notFoundExceptionControl(String id){
+        Animal responseAnimal =getAnimalById(id);
+
+        if(responseAnimal==null){
+            throw new AnimalNotFoundException("Not Founded","You should be more careful.");
+        }
+
+    }
+
     public List<Animal> getAnimals(){
         return repository.findAll();
     }
 
     public Animal getAnimalById(String id){
 
-        Optional<Animal> optionalAnimal=repository.findById(id);
+        Optional<Animal> optionalAnimal = repository.findById(id);
 
-        if(optionalAnimal.isEmpty()){
+        if(optionalAnimal.isPresent()){
+            return optionalAnimal.get();
 
-            throw new RuntimeException();
+
         }
-        return optionalAnimal.get();
+        return null;
+
 
     }
 
@@ -46,6 +58,7 @@ public class AnimalService  {
     }
 
     public void delete(String id){
+
         repository.deleteById(id);
 
     }

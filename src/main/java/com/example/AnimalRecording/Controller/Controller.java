@@ -1,6 +1,7 @@
 package com.example.AnimalRecording.Controller;
 
 import com.example.AnimalRecording.Model.Animal;
+import com.example.AnimalRecording.Exception.AnimalNotFoundException;
 import com.example.AnimalRecording.Service.AnimalService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,13 @@ public class Controller {
     }
 
     @GetMapping("/{id}")
-    public Animal getAnimal1(@PathVariable("id") String animalId) {
+    public Animal getAnimal(@PathVariable("id") String animalId) {
+        Animal responseAnimal =animalService.getAnimalById(animalId);
 
-        return animalService.getAnimalById(animalId);
+        animalService.notFoundExceptionControl(animalId);
+
+        return responseAnimal;
+
 
     }
 
@@ -43,12 +48,14 @@ public class Controller {
 
     @PutMapping("/{id}")
     public void update (@PathVariable("id") String animalId, @RequestBody Animal newAnimal ){
+        animalService.notFoundExceptionControl(animalId);
 
         animalService.put(newAnimal, animalId);
     }
 
     @DeleteMapping("/{id}")
     public void delete (@PathVariable("id") String id){
+        animalService.notFoundExceptionControl(id);
 
         animalService.delete(id);
 
