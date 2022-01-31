@@ -25,6 +25,7 @@ public class AnimalService  {
     }
 
     public List<Animal> getAnimals(){
+
         return repository.findAll();
     }
 
