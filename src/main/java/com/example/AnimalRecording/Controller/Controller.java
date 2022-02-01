@@ -34,6 +34,7 @@ public class Controller {
 
     }
 
+
     @GetMapping("/{id}")
     public EntityModel<Animal> getAnimal(@PathVariable("id") String animalId) {
         animalService.notFoundExceptionControl(animalId);

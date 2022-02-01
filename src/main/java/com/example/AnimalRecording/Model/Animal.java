@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class Animal {
 
 
-    @Size(min=3, message = "Name should have atleast 3 character.")
+    @Size(min=3, max = 20, message = "Name should have atleast 3 and maximum 20 character.")
     private String name;
 
     private String breed;
