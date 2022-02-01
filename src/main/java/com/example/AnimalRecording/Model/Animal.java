@@ -1,12 +1,16 @@
 package com.example.AnimalRecording.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Size;
 
+
+@JsonIgnoreProperties(value = {"secret_info","secret_number"})
 
 
 @Data
@@ -24,6 +28,12 @@ public class Animal {
     private String id;
 
     private int age;
+
+
+    private String secret_info;
+
+
+    private int secret_number;
 
 
 
