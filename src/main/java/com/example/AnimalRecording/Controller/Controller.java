@@ -2,12 +2,16 @@ package com.example.AnimalRecording.Controller;
 
 import com.example.AnimalRecording.Model.Animal;
 import com.example.AnimalRecording.Service.AnimalService;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,11 +28,20 @@ public class Controller {
 
 
     @GetMapping()
-    public List<Animal> getAnimals() {
+    public MappingJacksonValue getAnimals() {
 
         List<Animal> animals = animalService.getAnimals();
 
-        return animals;
+        //Dynamic Filter
+        SimpleBeanPropertyFilter filter =  SimpleBeanPropertyFilter.filterOutAllExcept("name","breed","id","age");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("Filtered Bean",filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(animals);
+        mapping.setFilters(filters);
+
+        return mapping;
+
+
+
 
 
 
@@ -36,7 +49,7 @@ public class Controller {
 
 
     @GetMapping("/{id}")
-    public EntityModel<Animal> getAnimal(@PathVariable("id") String animalId) {
+    public MappingJacksonValue getAnimal(@PathVariable("id") String animalId) {
         animalService.notFoundExceptionControl(animalId);
         Animal animal =animalService.getAnimalById(animalId);
 
@@ -44,7 +57,14 @@ public class Controller {
 
         WebMvcLinkBuilder linkToAnimals = linkTo(methodOn(this.getClass()).getAnimals());
         model.add(linkToAnimals.withRel("All Animals"));
-        return model;
+
+        //Dynamic Filter
+        SimpleBeanPropertyFilter filter =  SimpleBeanPropertyFilter.filterOutAllExcept("name","breed","id","age");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("Filtered Bean",filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(animal);
+        mapping.setFilters(filters);
+
+        return mapping;
 
     }
 
